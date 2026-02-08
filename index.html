@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PulseView — Мониторинг системы</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+        }
+        .glow {
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.15);
+        }
+        .card-hover {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+        }
+        .module-btn.active {
+            background: #3b82f6;
+            color: #fff;
+        }
+        .stat-number {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2">
+                <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
+                </svg>
+                <span class="text-xl font-bold">PulseView</span>
+            </a>
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
+                <a href="#features" class="hover:text-gray-900 transition">Возможности</a>
+                <a href="#modules" class="hover:text-gray-900 transition">Модули</a>
+                <a href="#remote" class="hover:text-gray-900 transition">Удалённый доступ</a>
+                <a href="#contact" class="hover:text-gray-900 transition">Контакты</a>
+            </nav>
+            <a href="#download" class="hidden sm:inline-flex items-center gap-1.5 bg-blue-500 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-blue-600 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/>
+                </svg>
+                Скачать
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="gradient-hero text-white py-24 md:py-32">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
+                Полный контроль<br>над вашей системой
+            </h1>
+            <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10">
+                Лёгкое и быстрое приложение для мониторинга ресурсов компьютера.
+                Процессор, память, диски, сеть — всё в одном месте.
+            </p>
+            <div id="download" class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+                <a href="#" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-8 py-3.5 rounded-xl text-lg transition shadow-lg shadow-blue-500/25">
+                    Скачать бесплатно
+                </a>
+                <a href="#features" class="border border-white/20 hover:border-white/40 text-white font-medium px-8 py-3.5 rounded-xl text-lg transition">
+                    Узнать больше
+                </a>
+            </div>
+            <p class="text-sm text-gray-400">Windows 10+ / macOS 12+ / Linux</p>
+        </div>
+
+        <!-- Hero mockup -->
+        <div class="max-w-4xl mx-auto px-6 mt-16">
+            <div class="bg-gray-800 rounded-2xl border border-gray-700 glow overflow-hidden shadow-2xl">
+                <div class="flex items-center gap-2 px-4 py-3 border-b border-gray-700">
+                    <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                    <span class="ml-3 text-sm text-gray-400">PulseView Dashboard</span>
+                </div>
+                <div class="p-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <!-- CPU -->
+                    <div class="bg-gray-900/60 rounded-xl p-4 text-center">
+                        <div class="text-xs text-gray-400 mb-2">CPU</div>
+                        <div class="relative w-16 h-16 mx-auto mb-2">
+                            <svg class="w-16 h-16 -rotate-90" viewBox="0 0 36 36">
+                                <circle cx="18" cy="18" r="14" fill="none" stroke="#374151" stroke-width="3"/>
+                                <circle cx="18" cy="18" r="14" fill="none" stroke="#3b82f6" stroke-width="3" stroke-dasharray="62 88" stroke-linecap="round"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center text-sm font-bold text-blue-400">71%</div>
+                        </div>
+                        <div class="text-xs text-gray-500">3.8 GHz</div>
+                    </div>
+                    <!-- RAM -->
+                    <div class="bg-gray-900/60 rounded-xl p-4 text-center">
+                        <div class="text-xs text-gray-400 mb-2">RAM</div>
+                        <div class="relative w-16 h-16 mx-auto mb-2">
+                            <svg class="w-16 h-16 -rotate-90" viewBox="0 0 36 36">
+                                <circle cx="18" cy="18" r="14" fill="none" stroke="#374151" stroke-width="3"/>
+                                <circle cx="18" cy="18" r="14" fill="none" stroke="#8b5cf6" stroke-width="3" stroke-dasharray="53 88" stroke-linecap="round"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center text-sm font-bold text-purple-400">60%</div>
+                        </div>
+                        <div class="text-xs text-gray-500">9.6 / 16 GB</div>
+                    </div>
+                    <!-- Disk -->
+                    <div class="bg-gray-900/60 rounded-xl p-4 text-center">
+                        <div class="text-xs text-gray-400 mb-2">SSD</div>
+                        <div class="relative w-16 h-16 mx-auto mb-2">
+                            <svg class="w-16 h-16 -rotate-90" viewBox="0 0 36 36">
+                                <circle cx="18" cy="18" r="14" fill="none" stroke="#374151" stroke-width="3"/>
+                                <circle cx="18" cy="18" r="14" fill="none" stroke="#10b981" stroke-width="3" stroke-dasharray="35 88" stroke-linecap="round"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center text-sm font-bold text-emerald-400">40%</div>
+                        </div>
+                        <div class="text-xs text-gray-500">204 / 512 GB</div>
+                    </div>
+                    <!-- Network -->
+                    <div class="bg-gray-900/60 rounded-xl p-4 text-center">
+                        <div class="text-xs text-gray-400 mb-2">Сеть</div>
+                        <div class="relative w-16 h-16 mx-auto mb-2">
+                            <svg class="w-16 h-16" fill="none" stroke="#f59e0b" stroke-width="1.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5-6L16.5 16.5m0 0L12 10.5m4.5 6V3"/>
+                            </svg>
+                        </div>
+                        <div class="text-xs text-gray-500">↓ 42 MB/s ↑ 8 MB/s</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Banner -->
+    <section class="py-16 bg-white border-b border-gray-100">
+        <div class="max-w-4xl mx-auto px-6 grid grid-cols-3 gap-8 text-center">
+            <div>
+                <div class="text-4xl md:text-5xl font-extrabold stat-number">500K+</div>
+                <div class="text-sm text-gray-500 mt-2">установок по всему миру</div>
+            </div>
+            <div>
+                <div class="text-4xl md:text-5xl font-extrabold stat-number">4.8</div>
+                <div class="text-sm text-gray-500 mt-2">средний рейтинг пользователей</div>
+            </div>
+            <div>
+                <div class="text-4xl md:text-5xl font-extrabold stat-number">24</div>
+                <div class="text-sm text-gray-500 mt-2">поддерживаемых языка</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modules Section -->
+    <section id="modules" class="py-20 md:py-28">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Модули мониторинга</h2>
+                <p class="text-gray-500 max-w-xl mx-auto">Выбирайте только те модули, которые вам нужны. Каждый работает независимо и потребляет минимум ресурсов.</p>
+            </div>
+
+            <!-- Module tabs -->
+            <div class="flex flex-wrap justify-center gap-2 mb-12">
+                <button class="module-btn active px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 text-gray-600 transition" onclick="selectModule(this)">Процессор</button>
+                <button class="module-btn px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 text-gray-600 transition" onclick="selectModule(this)">Видеокарта</button>
+                <button class="module-btn px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 text-gray-600 transition" onclick="selectModule(this)">Память</button>
+                <button class="module-btn px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 text-gray-600 transition" onclick="selectModule(this)">Диски</button>
+                <button class="module-btn px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 text-gray-600 transition" onclick="selectModule(this)">Датчики</button>
+                <button class="module-btn px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 text-gray-600 transition" onclick="selectModule(this)">Сеть</button>
+                <button class="module-btn px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 text-gray-600 transition" onclick="selectModule(this)">Батарея</button>
+                <button class="module-btn px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 text-gray-600 transition" onclick="selectModule(this)">Bluetooth</button>
+            </div>
+
+            <!-- Module content -->
+            <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
+                <div class="grid md:grid-cols-2">
+                    <div class="p-8 md:p-12 flex flex-col justify-center">
+                        <h3 class="text-2xl font-bold mb-4">Отслеживайте загрузку процессора</h3>
+                        <p class="text-gray-500 mb-6 leading-relaxed">
+                            Детальная информация о каждом ядре, частоте, температуре и активных процессах.
+                            Виджет в панели задач покажет текущую нагрузку без необходимости открывать окно приложения.
+                        </p>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                                Нагрузка по каждому ядру в реальном времени
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                                Список процессов с сортировкой по потреблению
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                                Уведомления при превышении порога нагрузки
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-50 p-8 md:p-12 flex items-center justify-center">
+                        <!-- Module preview chart -->
+                        <div class="w-full max-w-sm">
+                            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+                                <div class="flex justify-between items-center mb-4">
+                                    <span class="text-sm font-semibold">CPU — Загрузка</span>
+                                    <span class="text-xs text-gray-400">Последние 60с</span>
+                                </div>
+                                <div class="flex items-end gap-1 h-24">
+                                    <div class="flex-1 bg-blue-100 rounded-t" style="height:45%"></div>
+                                    <div class="flex-1 bg-blue-200 rounded-t" style="height:62%"></div>
+                                    <div class="flex-1 bg-blue-300 rounded-t" style="height:38%"></div>
+                                    <div class="flex-1 bg-blue-200 rounded-t" style="height:55%"></div>
+                                    <div class="flex-1 bg-blue-300 rounded-t" style="height:70%"></div>
+                                    <div class="flex-1 bg-blue-400 rounded-t" style="height:85%"></div>
+                                    <div class="flex-1 bg-blue-300 rounded-t" style="height:60%"></div>
+                                    <div class="flex-1 bg-blue-200 rounded-t" style="height:50%"></div>
+                                    <div class="flex-1 bg-blue-300 rounded-t" style="height:65%"></div>
+                                    <div class="flex-1 bg-blue-400 rounded-t" style="height:78%"></div>
+                                    <div class="flex-1 bg-blue-500 rounded-t" style="height:92%"></div>
+                                    <div class="flex-1 bg-blue-400 rounded-t" style="height:71%"></div>
+                                </div>
+                                <div class="mt-4 grid grid-cols-4 gap-2 text-center">
+                                    <div>
+                                        <div class="text-xs text-gray-400">Ядро 1</div>
+                                        <div class="text-sm font-semibold text-blue-600">82%</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs text-gray-400">Ядро 2</div>
+                                        <div class="text-sm font-semibold text-blue-600">45%</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs text-gray-400">Ядро 3</div>
+                                        <div class="text-sm font-semibold text-blue-600">67%</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs text-gray-400">Ядро 4</div>
+                                        <div class="text-sm font-semibold text-blue-600">38%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 md:py-28 bg-white">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Почему PulseView?</h2>
+                <p class="text-gray-500 max-w-xl mx-auto">Создан для тех, кому важна производительность системы без лишней сложности.</p>
+            </div>
+
+            <!-- Stats row -->
+            <div class="grid grid-cols-3 gap-6 mb-16 max-w-2xl mx-auto">
+                <div class="text-center">
+                    <div class="text-4xl font-extrabold stat-number">8</div>
+                    <div class="text-sm text-gray-500 mt-1">модулей</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-extrabold stat-number">15</div>
+                    <div class="text-sm text-gray-500 mt-1">виджетов</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-extrabold stat-number">4г</div>
+                    <div class="text-sm text-gray-500 mt-1">разработки</div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="card-hover bg-gray-50 rounded-2xl p-8 border border-gray-100">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Молниеносная скорость</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Приложение потребляет менее 0.5% ресурсов CPU. Никакого влияния на производительность вашей работы.</p>
+                </div>
+
+                <div class="card-hover bg-gray-50 rounded-2xl p-8 border border-gray-100">
+                    <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 010-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Гибкая настройка</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Настройте каждый виджет под себя: размер, цвет, расположение, интервал обновления. Всё полностью кастомизируется.</p>
+                </div>
+
+                <div class="card-hover bg-gray-50 rounded-2xl p-8 border border-gray-100">
+                    <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Открытый код</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Полностью открытый исходный код. Проверяйте, дополняйте, предлагайте улучшения — проект принадлежит сообществу.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Remote Section -->
+    <section id="remote" class="py-20 md:py-28">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-10 md:p-16 text-center text-white overflow-hidden relative">
+                <div class="absolute inset-0 opacity-10">
+                    <div class="absolute top-10 left-10 w-32 h-32 bg-blue-400 rounded-full blur-3xl"></div>
+                    <div class="absolute bottom-10 right-10 w-40 h-40 bg-purple-400 rounded-full blur-3xl"></div>
+                </div>
+                <div class="relative">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Мониторьте удалённо с PulseView Remote</h2>
+                    <p class="text-gray-300 max-w-xl mx-auto mb-8">
+                        Следите за состоянием ваших серверов и рабочих станций через веб-панель.
+                        Уведомления, графики, история — доступно из любой точки мира.*
+                    </p>
+                    <a href="#" class="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold px-8 py-3.5 rounded-xl transition shadow-lg shadow-blue-500/25">
+                        Присоединиться к бета-тесту
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                        </svg>
+                    </a>
+                    <p class="text-xs text-gray-500 mt-6">* Веб-панель управления находится в стадии бета-тестирования</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Releases Section -->
+    <section class="py-16 bg-white border-t border-gray-100">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="font-semibold text-lg mb-2">История версий</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed">Следите за обновлениями и новыми возможностями в каждом релизе. Мы публикуем подробные заметки к каждой версии.</p>
+                    <a href="#" class="inline-flex items-center gap-1 text-sm text-blue-500 font-medium mt-3 hover:text-blue-600 transition">
+                        Посмотреть релизы
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+                    </a>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-lg mb-2">Открытый проект</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed">PulseView — проект с открытым исходным кодом. Мы рады каждому контрибьютору и всегда открыты для предложений.</p>
+                    <a href="#" class="inline-flex items-center gap-1 text-sm text-blue-500 font-medium mt-3 hover:text-blue-600 transition">
+                        GitHub
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+                    </a>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-lg mb-2">Поддержка</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed">Нашли баг или есть идея? Создайте issue на GitHub или напишите нам в Telegram. Мы стараемся отвечать быстро.</p>
+                    <a href="#" class="inline-flex items-center gap-1 text-sm text-blue-500 font-medium mt-3 hover:text-blue-600 transition">
+                        Написать нам
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="border-t border-gray-200 bg-gray-50">
+        <div class="max-w-6xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2 text-gray-400 text-sm">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
+                </svg>
+                <span>&copy; 2026 PulseView. Все права защищены.</span>
+            </div>
+            <div class="flex items-center gap-6 text-sm text-gray-400">
+                <a href="#" class="hover:text-gray-600 transition">Политика конфиденциальности</a>
+                <a href="#" class="hover:text-gray-600 transition">Условия использования</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://widget.stage.divetim.ru/dive-widget.iife.js?apiKey=c4d3b2aaa18b5894689a80a430b70b4c80d09f86" async></script>
+
+    <script>
+        function selectModule(btn) {
+            document.querySelectorAll('.module-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
